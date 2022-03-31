@@ -18,7 +18,7 @@ pub enum PostOrComment {
 #[derive(Deserialize)]
 #[serde(untagged)]
 pub enum PageOrNote {
-  Page(Box<Page>),
+  Page(Page),
   Note(Note),
 }
 
@@ -81,7 +81,7 @@ impl ApubObject for PostOrComment {
   ) -> Result<Self, LemmyError> {
     Ok(match apub {
       PageOrNote::Page(p) => PostOrComment::Post(Box::new(
-        ApubPost::from_apub(*p, context, request_counter).await?,
+        ApubPost::from_apub(p, context, request_counter).await?,
       )),
       PageOrNote::Note(n) => PostOrComment::Comment(Box::new(
         ApubComment::from_apub(n, context, request_counter).await?,
