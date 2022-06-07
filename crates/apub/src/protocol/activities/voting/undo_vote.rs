@@ -14,7 +14,11 @@ pub struct UndoVote {
   #[serde(deserialize_with = "deserialize_one_or_many")]
   pub(crate) to: Vec<Url>,
   pub(crate) object: Vote,
-  #[serde(deserialize_with = "deserialize_one_or_many")]
+  #[serde(
+    deserialize_with = "deserialize_one_or_many",
+    skip_serializing_if = "Vec::is_empty",
+    default
+  )]
   pub(crate) cc: Vec<Url>,
   #[serde(rename = "type")]
   pub(crate) kind: UndoType,
